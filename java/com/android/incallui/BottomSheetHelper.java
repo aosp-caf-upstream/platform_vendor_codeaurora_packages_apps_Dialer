@@ -819,7 +819,9 @@ public class BottomSheetHelper implements InCallPresenter.InCallEventListener,
 
     @Override
     public void onPrimaryCallChanged(DialerCall call) {
+      LogUtil.d("BottomSheetHelper.onPrimaryCallChanged", "");
       dismissBottomSheet();
+      updateMap();
     }
 
      /**

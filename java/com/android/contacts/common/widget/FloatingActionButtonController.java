@@ -18,7 +18,7 @@ package com.android.contacts.common.widget;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -44,6 +44,7 @@ public class FloatingActionButtonController {
   private final FloatingActionButton mFab;
   private final Interpolator mFabInterpolator;
   private int mScreenWidth;
+  private int mFabIconId = -1;
 
   public FloatingActionButtonController(Activity activity, FloatingActionButton fab) {
     Resources resources = activity.getResources();
@@ -84,9 +85,12 @@ public class FloatingActionButtonController {
     }
   }
 
-  public void changeIcon(Drawable icon, String description) {
-    if (mFab.getDrawable() != icon || !mFab.getContentDescription().equals(description)) {
-      mFab.setImageDrawable(icon);
+  public void changeIcon(@DrawableRes int iconId, String description) {
+    if (this.mFabIconId != iconId) {
+      mFab.setImageResource(iconId);
+      this.mFabIconId = iconId;
+    }
+    if (!mFab.getContentDescription().equals(description)) {
       mFab.setContentDescription(description);
     }
   }

@@ -76,12 +76,16 @@ public class QtiCallUtils {
         if (sIExtTelephony != null) {
             return sIExtTelephony;
         }
+
+        IBinder b;
         try {
             Class c = Class.forName("android.os.ServiceManager");
             Method m = c.getMethod("getService",new Class[]{String.class});
 
-            sIExtTelephony =
-                IExtTelephony.Stub.asInterface((IBinder)m.invoke(null, "extphone"));
+            b = (IBinder)m.invoke(null, "extphone");
+            sIExtTelephony = IExtTelephony.Stub.asInterface(b);
+
+            b.linkToDeath(()->handleQtiExtTelephonyServiceDeath(), 0);
         } catch (ClassNotFoundException e) {
             Log.e(LOG_TAG, " ex: " + e);
         } catch (IllegalArgumentException e) {
@@ -94,8 +98,16 @@ public class QtiCallUtils {
             Log.e(LOG_TAG, " ex: " + e);
         } catch (NoSuchMethodException e) {
             Log.e(LOG_TAG, " ex: " + e);
+        } catch (RemoteException e) {
+            Log.e(LOG_TAG, "Unable to listen for QtiExtTelephony service death");
         }
+
         return sIExtTelephony;
+    }
+
+    private static void handleQtiExtTelephonyServiceDeath() {
+        sIExtTelephony = null;
+        Log.i(LOG_TAG, "handleQtiExtTelephonyServiceDeath QtiExtTelephony binder died");
     }
 
     /**

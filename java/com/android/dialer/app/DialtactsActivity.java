@@ -1307,7 +1307,7 @@ public class DialtactsActivity extends TransactionSafeActivity
 
   private void showFabInSearchUi() {
     mFloatingActionButtonController.changeIcon(
-        getResources().getDrawable(R.drawable.quantum_ic_dialpad_white_24, null),
+        R.drawable.quantum_ic_dialpad_white_24,
         getResources().getString(R.string.action_menu_dialpad_button));
     mFloatingActionButtonController.align(getFabAlignment(), false /* animate */);
     mFloatingActionButtonController.scaleIn(FAB_SCALE_IN_DELAY_MS);
