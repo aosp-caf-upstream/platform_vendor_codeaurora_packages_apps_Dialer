@@ -202,8 +202,8 @@ public class CallLogQueryHandler extends NoNullCursorAsyncQueryHandler {
 
     if (!TextUtils.isEmpty(accountId)) {
         where.append(" AND ");
-        where.append(String.format("(%s = ?)", Calls.PHONE_ACCOUNT_ID));
-        selectionArgs.add(accountId);
+        where.append(String.format("(%s LIKE ?)", Calls.PHONE_ACCOUNT_ID));
+        selectionArgs.add(accountId + "%");
     }
 
     if (newerThan > 0) {
