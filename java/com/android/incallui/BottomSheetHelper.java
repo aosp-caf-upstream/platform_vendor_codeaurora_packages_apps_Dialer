@@ -233,8 +233,8 @@ public class BottomSheetHelper implements InCallPresenter.InCallEventListener,
    }
 
    public boolean isManageConferenceVisible() {
-     if (moreOptionsMap == null || mResources == null) {
-         LogUtil.w("isManageConferenceVisible","moreOptionsMap or mResources is null");
+     if (moreOptionsMap == null || mResources == null || mCall == null) {
+         LogUtil.w("isManageConferenceVisible","moreOptionsMap or mResources or mCall is null");
          return false;
      }
 

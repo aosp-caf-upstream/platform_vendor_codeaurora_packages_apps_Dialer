@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -66,7 +67,11 @@ import com.android.incallui.telecomeventui.InternationalCallOnWifiDialogFragment
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /** Shared functionality between the new and old in call activity. */
 public class InCallActivityCommon {
@@ -107,6 +112,11 @@ public class InCallActivityCommon {
   private boolean animateDialpadOnShow;
   private String dtmfTextToPreopulate;
   @DialpadRequestType private int showDialpadRequest = DIALPAD_REQUEST_NONE;
+
+  final Handler mSuplSvcToastShowHandler = new Handler();
+  Set<String> mSuplSvcMessages = Collections.synchronizedSet(new HashSet<String>());
+  Toast mSuplSvcToast = null;
+  private static final int TOAST_SHOW_LONG_DURATION_MILLIS = 4000;
 
   private final SelectPhoneAccountListener selectAccountListener =
       new SelectPhoneAccountListener() {
@@ -339,6 +349,7 @@ public class InCallActivityCommon {
   public void onDestroy() {
     InCallPresenter.getInstance().unsetActivity(inCallActivity);
     InCallPresenter.getInstance().updateIsChangingConfigurations();
+    mSuplSvcToastShowHandler.removeCallbacks(mSuplSvcToastShowRunnable);
   }
 
   void onNewIntent(Intent intent, boolean isRecreating) {
@@ -645,8 +656,43 @@ public class InCallActivityCommon {
     call.setHasShownWiFiToLteHandoverToast();
   }
 
+  final Runnable mSuplSvcToastShowRunnable =
+      new Runnable() {
+        @Override
+        public void run() {
+          mSuplSvcToast.cancel();
+          mSuplSvcToast = null;
+          if (mSuplSvcMessages.size() > 0) {
+            Iterator<String> itr = mSuplSvcMessages.iterator();
+            String msg = itr.next();
+            mSuplSvcMessages.remove(msg);
+            showSuplSvcToast(msg);
+          }
+        }
+      };
+
   public void showSuplServiceMessageToast(String suplNotificationMessage) {
-      Toast.makeText(inCallActivity, suplNotificationMessage, Toast.LENGTH_LONG).show();
+    showSuplSvcToast(suplNotificationMessage);
+  }
+
+  private void showSuplSvcToast(String suplNotificationMessage) {
+    if (inCallActivity == null) {
+      LogUtil.i("InCallActivityCommon.showSuplSvcToast",
+              "no inCallActivity to show supplementary service toast");
+      return;
+    }
+    if (mSuplSvcToast == null) {
+      LogUtil.i("InCallActivityCommon.showSuplSvcToast",
+              "Showing toast: %s", suplNotificationMessage);
+      mSuplSvcToast = Toast.makeText(inCallActivity, suplNotificationMessage, Toast.LENGTH_LONG);
+      mSuplSvcToast.show();
+      mSuplSvcToastShowHandler.postDelayed(mSuplSvcToastShowRunnable,
+              TOAST_SHOW_LONG_DURATION_MILLIS);
+    } else {
+      // Already one supplementary message toast showing, now add this message to set and
+      // wait for previous toast show to finish.
+      mSuplSvcMessages.add(suplNotificationMessage);
+    }
   }
 
   public void showWifiFailedDialog(final DialerCall call) {
