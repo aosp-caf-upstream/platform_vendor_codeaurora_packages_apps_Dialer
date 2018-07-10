@@ -685,6 +685,7 @@ public class InCallActivityCommon {
       LogUtil.i("InCallActivityCommon.showSuplSvcToast",
               "Showing toast: %s", suplNotificationMessage);
       mSuplSvcToast = Toast.makeText(inCallActivity, suplNotificationMessage, Toast.LENGTH_LONG);
+      mSuplSvcToast.getWindowParams().flags |= WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
       mSuplSvcToast.show();
       mSuplSvcToastShowHandler.postDelayed(mSuplSvcToastShowRunnable,
               TOAST_SHOW_LONG_DURATION_MILLIS);
