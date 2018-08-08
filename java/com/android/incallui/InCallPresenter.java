@@ -1056,6 +1056,10 @@ public class InCallPresenter implements CallList.Listener {
       mProximitySensor.onInCallShowing(showing);
     }
 
+    if (mContext == null) {
+      return;
+    }
+
     Intent broadcastIntent = Bindings.get(mContext).getUiReadyBroadcastIntent(mContext);
     if (broadcastIntent != null) {
       broadcastIntent.putExtra(EXTRA_FIRST_TIME_SHOWN, !mIsActivityPreviouslyStarted);

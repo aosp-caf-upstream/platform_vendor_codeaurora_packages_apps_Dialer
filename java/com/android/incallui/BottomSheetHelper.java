@@ -197,11 +197,17 @@ public class BottomSheetHelper implements InCallPresenter.InCallEventListener,
 
    private boolean isModifyCallOptionsVisible() {
      final int primaryCallState = mCall.getState();
+     boolean hideModifyCallOption = false;
+     if (QtiImsExtUtils.isCancelModifyCallSupported(getPhoneId(), mContext)) {
+         hideModifyCallOption = !QtiCallUtils.hasReceiveVideoCapabilities(mCall)
+             && !QtiCallUtils.hasTransmitVideoCapabilities(mCall);
+     }
      return QtiCallUtils.useExt(mContext) && (DialerCall.State.ACTIVE == primaryCallState
         || DialerCall.State.ONHOLD == primaryCallState)
         && QtiCallUtils.hasVoiceOrVideoCapabilities(mCall)
         && !mCall.hasReceivedVideoUpgradeRequest()
-        && !isCancelModifyCallOptionsVisible();
+        && !isCancelModifyCallOptionsVisible()
+        && !hideModifyCallOption;
    }
 
    private boolean isCancelModifyCallOptionsVisible() {
