@@ -1012,6 +1012,14 @@ public class VideoCallPresenter
     }
   }
 
+  @Override
+  public boolean isIncomingVideoAvailableForEarlyMedia() {
+      return mPrimaryCall != null
+          && (mPrimaryCall.getState() == DialerCall.State.DIALING
+              || mPrimaryCall.getState() == DialerCall.State.CONNECTING)
+          && mIsIncomingVideoAvailable;
+  }
+
   /** Checks for a change to the video call and changes it if required. */
   private void checkForVideoCallChange(DialerCall call) {
     final VideoCall videoCall = call.getVideoCall();

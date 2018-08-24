@@ -49,6 +49,8 @@ public interface VideoCallScreenDelegate {
 
   boolean isUseDefaultImage();
 
+  boolean isIncomingVideoAvailableForEarlyMedia();
+
   void setUseDefaultImage(boolean useDefaultImage);
 
   VideoSurfaceTexture getLocalVideoSurfaceTexture();

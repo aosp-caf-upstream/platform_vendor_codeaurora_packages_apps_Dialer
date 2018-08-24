@@ -38,6 +38,7 @@ import com.android.dialer.logging.DialerImpression;
 import com.android.dialer.logging.Logger;
 import com.android.dialer.notification.NotificationChannelId;
 import com.android.dialer.spam.Spam;
+import com.android.dialer.util.PermissionsUtil;
 import com.android.incallui.R;
 import com.android.incallui.call.CallList;
 import com.android.incallui.call.DialerCall;
@@ -69,6 +70,11 @@ public class SpamCallListListener implements CallList.Listener {
     String number = call.getNumber();
     if (TextUtils.isEmpty(number)) {
       return;
+    }
+    if (!PermissionsUtil.hasCallLogReadPermissions(context)) {
+        LogUtil.i("SpamCallListListener.onIncomingCall",
+                "missing call log permission, need not check for number is in call history");
+        return;
     }
     NumberInCallHistoryTask.Listener listener =
         new NumberInCallHistoryTask.Listener() {
