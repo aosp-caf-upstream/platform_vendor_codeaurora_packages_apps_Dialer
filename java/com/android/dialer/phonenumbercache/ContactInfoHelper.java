@@ -448,15 +448,21 @@ public class ContactInfoHelper {
         }
         String combName = "";
         for (String num : nums) {
-          ContactInfo singleCi = lookupContactFromUri(getContactInfoLookupUri(num, directoryId));
-          //If contact does not exist, need to avoid changing static empty-contact.
-          if (singleCi == ContactInfo.EMPTY) {
-              singleCi = new ContactInfo();
+          if (!TextUtils.isEmpty(num)) {
+            ContactInfo singleCi =
+                lookupContactFromUri(getContactInfoLookupUri(num, directoryId));
+            //If contact does not exist, need to avoid changing static empty-contact.
+            if (singleCi == null || singleCi == ContactInfo.EMPTY) {
+                singleCi = new ContactInfo();
+            }
+            if (TextUtils.isEmpty(singleCi.name)) {
+              singleCi.name = formatPhoneNumber(num, null, countryIso);
+            }
+            combName += singleCi.name + ";";
+          } else {
+            LogUtil.d("ContactInfoHelper.queryContactInfoForPhoneNumber",
+                "Invalid sub-number from conference call");
           }
-          if (TextUtils.isEmpty(singleCi.name)) {
-            singleCi.name = formatPhoneNumber(num, null, countryIso);
-          }
-          combName += singleCi.name + ";";
         }
         if (!TextUtils.isEmpty(combName) && combName.length() > 1) {
           info.name = combName.substring(0, combName.length() - 1);
