@@ -26,18 +26,18 @@ public class ConstantsImpl extends Constants {
   @Override
   @NonNull
   public String getFilteredNumberProviderAuthority() {
-    return "com.android.dialer.blocking.filterednumberprovider";
+    return "com.codeaurora.dialer.blocking.filterednumberprovider";
   }
 
   @Override
   @NonNull
   public String getFileProviderAuthority() {
-    return "com.android.dialer.files";
+    return "com.codeaurora.dialer.files";
   }
 
   @NonNull
   @Override
   public String getAnnotatedCallLogProviderAuthority() {
-    return "com.android.dialer.annotatedcalllog";
+    return "com.codeaurora.dialer.annotatedcalllog";
   }
 }

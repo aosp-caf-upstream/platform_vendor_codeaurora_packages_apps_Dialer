@@ -1290,7 +1290,7 @@ public class DialtactsActivity extends TransactionSafeActivity
   }
 
   private void maybeEnterSearchUi() {
-    if (!isInSearchUi()) {
+    if (!isInSearchUi() && mIsDialpadShown) {
       enterSearchUi(true /* isSmartDial */, mSearchQuery, false);
     }
   }
