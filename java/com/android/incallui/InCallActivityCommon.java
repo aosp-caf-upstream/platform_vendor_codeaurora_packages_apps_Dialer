@@ -924,6 +924,12 @@ public class InCallActivityCommon {
     } else {
       phoneAccountHandles = new ArrayList<>();
     }
+    SelectPhoneAccountDialogFragment dialogFragment =
+        (SelectPhoneAccountDialogFragment)
+            inCallActivity.getFragmentManager().findFragmentByTag(TAG_SELECT_ACCOUNT_FRAGMENT);
+    if (dialogFragment != null && dialogFragment.getShowsDialog()) {
+        dialogFragment.dismiss();
+    }
 
     selectPhoneAccountDialogFragment =
         SelectPhoneAccountDialogFragment.newInstance(

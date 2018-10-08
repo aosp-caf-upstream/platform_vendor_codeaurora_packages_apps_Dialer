@@ -86,6 +86,11 @@ public class InCallPresenter implements CallList.Listener {
 
   private static final long BLOCK_QUERY_TIMEOUT_MS = 1000;
 
+  // Allow to launch call account selection dialog if multi-MO calls are triggered at the same time
+  // It is must larger than 1, currently, it is configured as 2 by default
+  // Means there are more than 1 MO call presenting, the dialog is allowed to the last one
+  private static final int ALLOW_WAITING_CALL_ACCOUNT_SELECTION_DIALOG_THRESHOLD = 2;
+
   private static final Bundle EMPTY_EXTRAS = new Bundle();
 
   private static InCallPresenter sInCallPresenter;
@@ -1343,7 +1348,10 @@ public class InCallPresenter implements CallList.Listener {
 
     // If the state isn't changing we have already done any starting/stopping of activities in
     // a previous pass...so lets cut out early
-    if (newState == mInCallState) {
+    // If a few MO calls are triggered in short time
+    // need to allow to reselect phone account to the last call.
+    if (newState == mInCallState && mCallList.getCountForWaitingAccountCall() <
+        ALLOW_WAITING_CALL_ACCOUNT_SELECTION_DIALOG_THRESHOLD) {
       return newState;
     }
 

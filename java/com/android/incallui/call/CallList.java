@@ -529,6 +529,16 @@ public class CallList implements DialerCallDelegate {
     return retval;
   }
 
+  public int getCountForWaitingAccountCall() {
+    int count = 0;
+    for (DialerCall call : mCallById.values()) {
+      if (call.getState() == DialerCall.State.SELECT_PHONE_ACCOUNT) {
+          count++;
+      }
+    }
+    return count;
+  }
+
   /**
    * This is called when the service disconnects, either expectedly or unexpectedly. For the
    * expected case, it's because we have no calls left. For the unexpected case, it is likely a
