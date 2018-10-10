@@ -202,7 +202,8 @@ public class OrientationModeHandler implements
     public int getOrientation(DialerCall call) {
         // When VT call is put on hold, user is presented with VoLTE UI.
         // Hence, restricting held VT call to change orientation.
-        if (isVideoOrUpgrade(call) && (call.getActualState() != DialerCall.State.ONHOLD)) {
+        if (isVideoOrUpgrade(call) && (call.getActualState() != DialerCall.State.ONHOLD)
+                && (call.getActualState() != DialerCall.State.DISCONNECTED)) {
             return (mOrientationMode == QtiCallConstants.ORIENTATION_MODE_UNSPECIFIED) ?
                     InCallOrientationEventListener.ACTIVITY_PREFERENCE_ALLOW_ROTATION :
                     QtiCallUtils.toScreenOrientation(mOrientationMode);
