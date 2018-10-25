@@ -54,6 +54,7 @@ public class ContactsFragment extends Fragment
         ChangeListener {
 
   public static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 1;
+  private static final int LOADER_ID = 100;
 
   private FastScroller fastScroller;
   private TextView anchoredHeader;
@@ -233,7 +234,7 @@ public class ContactsFragment extends Fragment
       if (grantResults.length >= 1 && PackageManager.PERMISSION_GRANTED == grantResults[0]) {
         // Force a refresh of the data since we were missing the permission before this.
         emptyContentView.setVisibility(View.GONE);
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(LOADER_ID, null, this);
       }
     }
   }
