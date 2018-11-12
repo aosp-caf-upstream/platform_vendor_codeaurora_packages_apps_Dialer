@@ -220,7 +220,8 @@ public class VideoCallPresenter
     int phoneId = BottomSheetHelper.getInstance().getPhoneId();
     if (!QtiImsExtUtils.shallShowStaticImageUi(phoneId, mContext) &&
         QtiImsExtUtils.shallTransmitStaticImage(phoneId, mContext)) {
-      sShallTransmitStaticImage = sUseDefaultImage = mIsInBackground;
+      sShallTransmitStaticImage = sUseDefaultImage = mIsInBackground &&
+          (isVideoCall(mPrimaryCall) || isVideoUpgrade(mPrimaryCall));
     }
 
     if (!isVideoCall(mPrimaryCall) && !isVideoUpgrade(mPrimaryCall)) {
