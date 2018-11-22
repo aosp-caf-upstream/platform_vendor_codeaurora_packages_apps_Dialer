@@ -136,7 +136,11 @@ public class VideoSurfaceTextureImpl implements VideoSurfaceTexture {
     LogUtil.i(
         "VideoSurfaceTextureImpl.createSurface",
         "width: " + width + ", height: " + height + " " + toString());
-    savedSurfaceTexture.setDefaultBufferSize(width, height);
+    if (surfaceDimensions != null ) {
+      savedSurfaceTexture.setDefaultBufferSize(surfaceDimensions.x, surfaceDimensions.y);
+    } else {
+      savedSurfaceTexture.setDefaultBufferSize(width, height);
+    }
     if (savedSurface != null) {
       savedSurface.release();
     }
