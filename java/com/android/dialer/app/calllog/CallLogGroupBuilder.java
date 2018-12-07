@@ -189,6 +189,9 @@ public class CallLogGroupBuilder {
       return compareSipAddresses(number1, number2);
     } else if (isConf1 && isConf2) {
       Pattern pattern = Pattern.compile("[,;]");
+      if (number1 == null || number2 == null) {
+          return false;
+      }
       String[] num1 = pattern.split(number1);
       String[] num2 = pattern.split(number2);
       if (num1 == null || num2 == null || num1.length != num2.length) {
