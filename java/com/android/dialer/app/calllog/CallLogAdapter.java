@@ -1019,6 +1019,10 @@ public class CallLogAdapter extends GroupingListAdapter
       return false;
     }
 
+    if (details.number == null) {
+        LogUtil.i("CallLogAdapter.loadData", "number NULL");
+        return false;
+    }
     final String phoneNumber = details.number.toString();
     Pattern pattern = Pattern.compile("[,;]");
     String[] num = pattern.split(phoneNumber);
