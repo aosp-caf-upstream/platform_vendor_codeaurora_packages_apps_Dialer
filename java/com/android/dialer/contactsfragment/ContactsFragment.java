@@ -86,7 +86,7 @@ public class ContactsFragment extends Fragment
     emptyContentView.setActionClickedListener(this);
 
     if (PermissionsUtil.hasContactsReadPermissions(getContext())) {
-      getLoaderManager().initLoader(0, null, this);
+      getLoaderManager().initLoader(LOADER_ID, null, this);
     } else {
       emptyContentView.setDescription(R.string.permission_no_contacts);
       emptyContentView.setActionLabel(R.string.permission_single_turn_on);
@@ -99,7 +99,7 @@ public class ContactsFragment extends Fragment
   @Override
   public void onChange() {
     if (getActivity() != null && isAdded()) {
-      getLoaderManager().restartLoader(0, null, this);
+      getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
   }
 
