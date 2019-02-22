@@ -115,6 +115,15 @@ public class DialerUtils {
           placeCallOrMakeToast(context, intent);
         }
       } else {
+        // If not adding below flag, ComposeMessageActivity will be in same task with
+        // DialtactsActivity. After back to ConversationList from ComposeMessageActivity,
+        // the icon in the recent task will mismatch with the real app. Beside the icon
+        // mismatch issue, there also be an issue that device will enter dialer app after
+        // click the messaging icon in laucher. The reproducing steps is described in our
+        // internal CR:2400821.
+        if (Intent.ACTION_SENDTO.equals(intent.getAction())) {
+          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
         context.startActivity(intent);
       }
     } catch (ActivityNotFoundException e) {
